@@ -1,0 +1,51 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm/
+
+# Optional yarn cache directory
+.yarn/
+
+# Environment variable files
+.env
+.env.*.local
+
+# Build output
+dist/
+build/
+out/
+
+# Debugging files
+*.local
+*.swp
+*.swo
+
+# Optional OS files
+.DS_Store
+Thumbs.db
+
+# IDE/editor configurations
+.vscode/
+.idea/
+*.iml
+
+# Optional coverage reports
+coverage/
+*.lcov
+
+# Optional lock files
+package-lock.json
+yarn.lock
+
+# Temporary files
+*.tmp
+*.temp
