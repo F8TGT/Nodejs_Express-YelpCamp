@@ -5,7 +5,7 @@ const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
 const Campground = require('./models/campground');
 
-const dbConnection = "mongodb://localhost:27017/yelp-camp";
+const dbConnection = "mongodb://0.0.0.0:27017/yelp-camp";
 mongoose.connect(dbConnection, {
     serverSelectionTimeoutMS: 5000
 });
