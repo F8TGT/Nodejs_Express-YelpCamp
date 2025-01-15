@@ -6,11 +6,13 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
-const campgrounds = require('./routes/campgrounds');
-const reviews = require('./routes/reviews');
+const userRoutes = require('./routes/users');
+const campgroundsRoutes = require('./routes/campgrounds');
+const reviewsRoutes = require('./routes/reviews');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/User');
+
 
 const dbConnection = "mongodb://0.0.0.0:27017/yelp-camp";
 mongoose.connect(dbConnection, {
@@ -50,18 +52,13 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/campgrounds', campgrounds);
-app.use('/campgrounds/:id/reviews', reviews);
+app.use('/', userRoutes);
+app.use('/campgrounds', campgroundsRoutes);
+app.use('/campgrounds/:id/reviews', reviewsRoutes);
 
 app.get('/', (req, res) => {
     res.render('home')
 });
-
-app.get('/fakeUser', async (req, res) => {
-    const user = new User({email: 'eddd@gmail.com', username: 'edd'});
-    const newUser = await User.register(user, 'chicken');
-    res.send(newUser);
-})
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404));
