@@ -6,12 +6,13 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
-const userRoutes = require('./routes/users');
-const campgroundsRoutes = require('./routes/campgrounds');
-const reviewsRoutes = require('./routes/reviews');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/User');
+
+const userRoutes = require('./routes/users');
+const campgroundsRoutes = require('./routes/campgrounds');
+const reviewsRoutes = require('./routes/reviews');
 
 const dbConnection = "mongodb://0.0.0.0:27017/yelp-camp";
 mongoose.connect(dbConnection, {
@@ -33,17 +34,34 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const sessionConfig = {
-    secret: 'thisshouldbeabettersecret!', resave: false, saveUninitialized: true, cookie: {
-        httpOnly: true, expires: Date.now() + 1000 * 60 * 60 * 24 * 7, maxAge: 1000 * 60 * 60 * 24 * 7,
+    secret: 'thisshouldbeabettersecret!',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7,
     }
 }
 app.use(session(sessionConfig));
 app.use(flash());
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser);
-passport.deserializeUser(User.deserializeUser());
+
+passport.serializeUser((user, done) => {
+    done(null, user.id);  // Ensure the user ID is stored correctly
+});
+
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await User.findById(id);  // Fetch user from DB correctly
+        done(null, user);
+    } catch (err) {
+        done(err);
+    }
+});
 
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
