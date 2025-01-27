@@ -33,18 +33,20 @@ router.post('/login', storeReturnTo, passport.authenticate('local', {
     failureFlash: true,
     failureRedirect: '/login'
 }), (req, res) => {
-    req.flash('success', 'Welcome back!');
+    const username = req.user.username;
+    req.flash('success', `Welcome back ${username}!`);
     const redirectUrl = res.locals.returnTo || '/campgrounds';
     delete req.session.returnTo;
     res.redirect(redirectUrl);
 })
 
 router.get('/logout', (req, res, next) => {
+    const username = req.user ? req.user.username : 'Guest'; // Save username before logging out
     req.logout(function (err) {
         if (err) {
             return next(err);
         }
-        req.flash('success', 'Goodbye!');
+        req.flash('success', `Goodbye ${username}!`);
         res.redirect('/campgrounds');
     });
 });
