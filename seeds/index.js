@@ -3,6 +3,7 @@ const cities = require('./cities');
 const {places, descriptors} = require('./seedHelpers');
 const Campground = require('../models/campground');
 
+
 const dbConnection = "mongodb://0.0.0.0:27017/yelp-camp";
 mongoose.connect(dbConnection, {
     serverSelectionTimeoutMS: 5000

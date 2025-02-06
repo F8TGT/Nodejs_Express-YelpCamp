@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const router = require("../routes/users");
+
 
 module.exports.renderRegister = (req, res) => {
     res.render('users/register');

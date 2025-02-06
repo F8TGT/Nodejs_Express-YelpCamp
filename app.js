@@ -14,6 +14,7 @@ const userRoutes = require('./routes/users');
 const campgroundsRoutes = require('./routes/campgrounds');
 const reviewsRoutes = require('./routes/reviews');
 
+
 const dbConnection = "mongodb://0.0.0.0:27017/yelp-camp";
 mongoose.connect(dbConnection, {
     serverSelectionTimeoutMS: 5000
